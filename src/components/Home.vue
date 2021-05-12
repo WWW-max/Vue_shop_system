@@ -16,14 +16,14 @@
         <el-menu
           background-color="#333744"
           text-color="#fff"
-          active-text-color="#ffd04b"
+          active-text-color="#409EFF"
         >
         <!-- 一级菜单 -->
           <el-submenu :index="item.id+''" v-for="item in menulist" :key="item.id">
             <!-- 一级菜单的模板区域 -->
             <template slot="title">
               <!-- 图标 -->
-              <i class="el-icon-location"></i>
+              <i :class="iconsObj[item.id]"></i>
               <!-- 文本 -->
               <span>{{item.authName}}</span>
             </template>
@@ -31,7 +31,7 @@
             <!-- 二级菜单 -->
             <el-menu-item :index="subItem.id+''" v-for="subItem in item.children" :key="subItem.id">
               <!-- 图标 -->
-              <i class="el-icon-location"></i>
+              <i class="el-icon-menu"></i>
               <!-- 文本 -->
               <span>{{subItem.authName}}</span>
             </el-menu-item>
@@ -49,7 +49,14 @@ export default {
   data(){
     return {
       //左侧菜单数据
-      menulist:[]
+      menulist:[],
+      iconsObj: {
+        '125': 'iconfont icon-user',
+        '103': 'iconfont icon-tijikongjian',
+        '101': 'iconfont icon-shangpin',
+        '102': 'iconfont icon-danju',
+        '145': 'iconfont icon-baobiao'
+      }
     }
   },
   created(){//生命周期函数 获取菜单
@@ -97,5 +104,9 @@ export default {
 }
 .el-main {
   background-color: #eaedf1;
+}
+
+.iconfont{
+    margin:10px; //图标的外边距为10px ,和文本间隔开
 }
 </style>
