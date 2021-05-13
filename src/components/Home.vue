@@ -23,6 +23,7 @@
           :collapse="isCollapse"
           :collapse-transition="false"
           router
+          :default-active="activePath"
         >
         <!-- 一级菜单 -->
           <el-submenu :index="item.id+''" v-for="item in menulist" :key="item.id">
@@ -35,7 +36,8 @@
             </template>
 
             <!-- 二级菜单 -->
-            <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children" :key="subItem.id">
+            <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children"
+             :key="subItem.id" @click="saveNavState('/'+subItem.path)">
               <!-- 图标 -->
               <i class="el-icon-menu"></i>
               <!-- 文本 -->
@@ -67,16 +69,20 @@ export default {
         '145': 'iconfont icon-baobiao'
       },
       //是否折叠
-      isCollapse:false //参数默认不折叠
+      isCollapse:false,//参数默认不折叠
+      //被激活的链接地址
+      activePath: ''
     }
   },
   created(){//生命周期函数 获取菜单
       this.getMenuList()
+      this.activePath = window.sessionStorage.getItem('activePath`')
   },
   methods: {
     logout() {
       window.sessionStorage.clear();
       this.$router.push("/login");
+      this.activePath = window.sessionStorage.getItem('activePath');
     },
     //获取所有的菜单
     async getMenuList() {
@@ -88,6 +94,12 @@ export default {
     //点击按钮，却换菜单的折叠与展开
     toggleCollapse(){
          this.isCollapse=!this.isCollapse//是否折叠
+    },
+    //保存链接的激活状态
+    saveNavState(activePath){
+           window.sessionStorage.setItem('activePath',activePath)
+           //点击二级菜单后重新为activePath赋值
+           this.activePath= activePath;
     }
   },
 };
