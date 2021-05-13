@@ -11,13 +11,17 @@
     <!-- 页面主体区域 -->
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="200px">
+      <el-aside :width="isCollapse ? '64px' : '200px'">
+        <!-- 折叠按钮 -->
+        <div class="toggle-button" @click="toggleCollapse">|||</div>
         <!-- 侧边栏菜单区域 -->
         <el-menu
           background-color="#333744"
           text-color="#fff"
           active-text-color="#409EFF"
           unique-opened 
+          :collapse="isCollapse"
+          :collapse-transition="false"
         >
         <!-- 一级菜单 -->
           <el-submenu :index="item.id+''" v-for="item in menulist" :key="item.id">
@@ -57,7 +61,9 @@ export default {
         '101': 'iconfont icon-shangpin',
         '102': 'iconfont icon-danju',
         '145': 'iconfont icon-baobiao'
-      }
+      },
+      //是否折叠
+      isCollapse:false //参数默认不折叠
     }
   },
   created(){//生命周期函数 获取菜单
@@ -74,6 +80,10 @@ export default {
      if(res.meta.status!==200) return this.$message.error(res.meta.msg)
      this.menulist=res.data
      console.log(res)
+    },
+    //点击按钮，却换菜单的折叠与展开
+    toggleCollapse(){
+         this.isCollapse=!this.isCollapse//是否折叠
     }
   },
 };
@@ -112,5 +122,15 @@ export default {
 
 .iconfont{
     margin:10px; //图标的外边距为10px ,和文本间隔开
+}
+
+.toggle-button{
+  background-color:#4a5064;
+  font-size:10px;
+  line-height:24px;
+  color:#fff;
+  text-align:center;
+  letter-spacing:0.2em;
+  cursor:pointer;
 }
 </style>
