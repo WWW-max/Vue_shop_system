@@ -15,7 +15,9 @@ import {
     BreadcrumbItem,
     Card,
     Row,
-    Col
+    Col,
+    Table,
+    TableColumn
 } from 'element-ui'
 // 导入弹框提示组件
 import{Message} from 'element-ui'
@@ -36,4 +38,6 @@ Vue.use(BreadcrumbItem)//面包屑导航
 Vue.use(Card)//卡片视图
 Vue.use(Row)
 Vue.use(Col)
+Vue.use(Table) //表格
+Vue.use(TableColumn)//表格
 Vue.prototype.$message = Message//全局挂载  将弹框组件挂载到了Vue的原型上

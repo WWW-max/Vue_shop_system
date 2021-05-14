@@ -16,3 +16,9 @@ html,body,#app{
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
     
 }
+
+/* 表格上间距和字体大小 */
+.el-table{
+    margin-top: 15px;
+    font-size: 12px;
+}
