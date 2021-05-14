@@ -76,7 +76,7 @@ export default {
   },
   created(){//生命周期函数 获取菜单
       this.getMenuList()
-      this.activePath = window.sessionStorage.getItem('activePath`')
+      this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
     logout() {
