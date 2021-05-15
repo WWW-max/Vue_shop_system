@@ -18,7 +18,8 @@ import {
     Col,
     Table,
     TableColumn,
-    Switch
+    Switch,
+    Tooltip
 } from 'element-ui'
 // 导入弹框提示组件
 import{Message} from 'element-ui'
@@ -42,4 +43,5 @@ Vue.use(Col)
 Vue.use(Table) //表格
 Vue.use(TableColumn)//表格
 Vue.use(Switch)//开关
+Vue.use(Tooltip)//按钮文字提示
 Vue.prototype.$message = Message//全局挂载  将弹框组件挂载到了Vue的原型上
