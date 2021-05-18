@@ -8,7 +8,7 @@
       </div>
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
-    <!-- 页面主体区域 -->
+    <!-- 页面主体区域-->
     <el-container>
       <!-- 侧边栏 -->
       <el-aside :width="isCollapse ? '64px' : '200px'">
