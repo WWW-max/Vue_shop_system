@@ -14,7 +14,8 @@
       <el-aside :width="isCollapse ? '64px' : '200px'">
         <!-- 折叠按钮 -->
         <div class="toggle-button" @click="toggleCollapse">|||</div>
-        <!-- 侧边栏菜单区域 -->
+        <!-- 侧边栏菜单区域  router：开启vue-router(路由模式),启用该模式会在激活导航时以index作为path进行路由跳转
+            :default-active="activePath" 是否被激活  -->
         <el-menu
           background-color="#333744"
           text-color="#fff"
@@ -26,6 +27,7 @@
           :default-active="activePath"
         >
         <!-- 一级菜单 -->
+        <!-- item.id+''转字符串 -->
           <el-submenu :index="item.id+''" v-for="item in menulist" :key="item.id">
             <!-- 一级菜单的模板区域 -->
             <template slot="title">
@@ -36,6 +38,7 @@
             </template>
 
             <!-- 二级菜单 -->
+            <!-- :index="'/'+subItem.path" 路由跳转地址 -->
             <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children"
              :key="subItem.id" @click="saveNavState('/'+subItem.path)">
               <!-- 图标 -->
@@ -74,13 +77,16 @@ export default {
       activePath: ''
     }
   },
-  created(){//生命周期函数 获取菜单
+  created(){//生命周期函数(Home组件一被创建的时候执行) 获取菜单 
       this.getMenuList()
+      // 获取到被激活的链接地址
       this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
     logout() {
+      // 清空sessionStorage 
       window.sessionStorage.clear();
+      // 跳转到登录页
       this.$router.push("/login");
       this.activePath = window.sessionStorage.getItem('activePath');
     },
@@ -112,13 +118,14 @@ export default {
 .el-header {
   background-color: #373d41;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between;//左右贴边对齐
   padding-left: 0; //左图标靠左贴边对齐
   align-items: center; //退出按钮上下居中
-  color: #fff;
-  font-size: 20px;
+  color: #fff;  //"电商后台管理系统"字体颜色
+  font-size: 20px; //……字体大小
+  //嵌套 ，子元素选择器
   > div {
-    //嵌套
+    // 标题
     display: flex;
     align-items: center; //纵向居中对齐
     span {
@@ -139,14 +146,14 @@ export default {
 .iconfont{
     margin:10px; //图标的外边距为10px ,和文本间隔开
 }
-
+// 折叠按钮
 .toggle-button{
   background-color:#4a5064;
   font-size:10px;
   line-height:24px;
   color:#fff;
   text-align:center;
-  letter-spacing:0.2em;
-  cursor:pointer;
+  letter-spacing:0.2em;//字母间隔
+  cursor:pointer;//鼠标放上变成小手
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div class="login_container">
+    <!-- 登录盒子 -->
     <div class="login_box">
       <!-- 头像区域 -->
       <div class="avatar_box">
@@ -8,6 +9,7 @@
       <!-- 登录表单区域 -->
       <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
         <!-- 用户名 -->
+        <!-- prop指定校验规则 -->
         <el-form-item prop="username">
           <el-input v-model="loginForm.username" prefix-icon="iconfont icon-user"></el-input>
         </el-form-item>
@@ -55,17 +57,22 @@ export default {
        resetLoginForm(){
          this.$refs.loginFormRef.resetFields();
        },
+      //  
        login(){
+        //  登录预验证
          this.$refs.loginFormRef.validate(async valid=>{
+          //  如果返回结果不为真 
            if(!valid) return;
+          //  发送请求，请求地址为login  axios返回promise可用await修饰简化操作  async修饰成异步函数  解构赋值出data重新命名为res
            const {data: res} = await this.$http.post('login',this.loginForm);
+          //  使用弹框组件显示结果this.$message(Message组件挂载)
            if(res.meta.status!==200) return this.$message.error("登录失败！");
            this.$message.success('登录成功!');
           //  1.将登录成功之后的token,保存到客户端的sessionStorage（会话期间的存储机制）中
           //     1.1项目中除了登录之外的其他API接口，必须在登录之后才能返回
           //     1.2 token只应在当前网站打开期间生效，所以将token保存在sessionStorage中（localStorage是持久化的存储机制）
           window.sessionStorage.setItem('token', res.data.token);
-           //  2.通过编程式导航（this.$router.push）跳转到后台页面，路由地址是/home
+           //  2.通过编程式路由（this.$router.push）跳转到后台页面，路由地址是/home
            this.$router.push("/home");
         });
        }
@@ -83,11 +90,13 @@ export default {
   height: 300px;
   background-color: #fff;
   border-radius: 3px;
+  // 居中
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-
+   
+  // 头像  
   .avatar_box {
     height: 130px;
     width: 130px;
@@ -116,6 +125,7 @@ export default {
   box-sizing:border-box;
 }
 .btns{
+  // 按钮用弹性布局
   display: flex;
   justify-content:flex-end;
 }
