@@ -95,7 +95,7 @@
       :visible.sync="setRightDialogVisible"
       width="50%"
     >
-      <!-- 树形控件 -->
+      <!-- 树形控件  :data数据源  :props指定数据绑定的字段（看到的文本）在data中配置绑定对象-->
       <el-tree :data="rightslist" :props="treeProps"></el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightDialogVisible = false">取 消</el-button>
