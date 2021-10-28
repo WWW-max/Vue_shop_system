@@ -82,8 +82,7 @@
               >删除</el-button
             >
             <el-button size="mini" type="warning" icon="el-icon-setting"
-             @click="showSetRightDialog" >分配权限</el-button
-            >
+             @click="showSetRightDialog(scope.row)" >分配权限</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -96,7 +95,8 @@
       width="50%"
     >
       <!-- 树形控件  :data数据源  :props指定数据绑定的字段（看到的文本）在data中配置绑定对象-->
-      <el-tree :data="rightslist" :props="treeProps" show-checkbox node-key="id" default-expand-all></el-tree>
+      <el-tree :data="rightslist" :props="treeProps" show-checkbox node-key="id" default-expand-all 
+      :default-checked-keys="defKeys"></el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="setRightDialogVisible = false"
@@ -121,7 +121,9 @@ export default {
       treeProps:{
         label:'authName',
         children:'children'
-      }
+      },
+      //默认选中的节点Id值数组
+      defKeys: [],
     };
   },
   created() {
@@ -166,7 +168,7 @@ export default {
       role.children = res.data;
     },
     //展示分配权限的对话框
-    async showSetRightDialog(){
+    async showSetRightDialog(role){
       //获取所有权限数据
      const {data:res} = await this.$http.get('rights/tree')
 
@@ -174,10 +176,24 @@ export default {
        return this.$message.error('获取权限数据失败!');
      }
     
-    //把获取到的数据保存到data中
-    this.rightslist = res.data
-    console.log(this.rightslist)
+      //把获取到的数据保存到data中
+      this.rightslist = res.data
+      console.log(this.rightslist)
+
+      //递归获取三级节点的Id
+      this.getLeafKeys(role,this.defKeys)
+
       this.setRightDialogVisible = true
+    },
+    // 通过递归的形式，获取角色下所有三级权限的id，并保存到defKeys数组中
+    getLeafKeys(node,arr){
+      //如果当前node节点不包含children属性，则是三级节点
+      if(!node.children){
+        return arr.push(node.id)
+      }
+
+      node.children.forEach(item =>
+      this.getLeafKeys(item,arr))
     }
   },
 };
