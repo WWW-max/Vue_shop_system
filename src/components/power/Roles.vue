@@ -98,6 +98,7 @@
       title="分配权限"
       :visible.sync="setRightDialogVisible"
       width="50%"
+      @close="setRightDialogClosed"
     >
       <!-- 树形控件  :data数据源  :props指定数据绑定的字段（看到的文本）在data中配置绑定对象-->
       <el-tree
@@ -205,6 +206,11 @@ export default {
 
       node.children.forEach((item) => this.getLeafKeys(item, arr));
     },
+    //监听分配权限对话框的关闭事件
+    setRightDialogClosed(){
+      this.defKeys = [] 
+    }
+    
   },
 };
 </script>
