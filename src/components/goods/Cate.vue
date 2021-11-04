@@ -59,9 +59,17 @@
     <el-dialog
     title="添加分类"
     :visible.sync="addCateDialogVisible"
-    width="30%"
+    width="50%"
     >
-    <span>这是一段信息</span>
+    <!-- 添加分类的表单 -->
+    <el-form :model="addCateForm" :rules="addCateFormRules" ref="addCateFormRef" label-width="100px" >
+       <el-form-item label="分类名称：" prop="cat_name">
+          <el-input v-model="addCateForm.cat_name"></el-input>
+       </el-form-item>
+        <el-form-item label="父级分类：" >
+          <el-input v-model="addCateForm.cat_name"></el-input>
+       </el-form-item>
+    </el-form>
     <span slot="footer" class="dialog-footer">
         <el-button @click="addCateDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="addCateDialogVisible = false">确 定</el-button>
@@ -113,8 +121,22 @@ export default {
         },
       ],
       //控制添加分类对话框的显示与隐藏
-      addCateDialogVisible:false
-    
+      addCateDialogVisible: false,
+      // 添加分类的表单数据对象
+      addCateForm:{
+        //将要添加的分类的名称
+        cat_name:'',
+        // 父级分类的id
+        cat_id:0,
+        //分类的等级，默认要添加的是1级分类
+        cat_level:0
+      },
+      //添加分类表单的验证规则对象
+      addCateFormRules:{
+        cat_name:[
+           {required: true, message:'请输入分类名称', trigger: 'blur'}
+        ]
+      }
     };
   },
   created() {
@@ -148,9 +170,9 @@ export default {
       this.getCateList();
     },
     //点击按钮，展示添加分类的对话框
-    showAddCateDialog(){
-        addCateDialogVisible = true;
-    }
+    showAddCateDialog() {
+      this.addCateDialogVisible = true;
+    },
   },
 };
 </script>
