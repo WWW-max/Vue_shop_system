@@ -73,7 +73,8 @@
           :options="parentCateList"
           :props="cascaderProps"
           v-model="selectedKeys"
-          @change="parentCateChanged"></el-cascader>
+          @change="parentCateChanged">
+          </el-cascader>
        </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -151,7 +152,7 @@ export default {
         value:'cat_id',
         label:'cat_name',
         children:'children',
-        checkStrictly:true,
+        // checkStrictly:true,
         
       },
       //选中的父级分类的id数组
@@ -208,7 +209,7 @@ export default {
     },
     //选择项发生变化触发这个函数
     parentCateChanged(){
-
+        cosole.log("hhhh"+this.selectedKeys);
     }
   },
 };
