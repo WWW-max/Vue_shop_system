@@ -29,6 +29,7 @@ import {
     Select,
     Option,
     Cascader,
+    Alert,
 } from 'element-ui'
 // 导入弹框提示组件
 import{Message} from 'element-ui'
@@ -60,5 +61,6 @@ Vue.use(Tree)
 Vue.use(Select) //下拉框
 Vue.use(Option)
 Vue.use(Cascader)
+Vue.use(Alert)
 Vue.prototype.$message = Message//全局挂载  将弹框组件挂载到了Vue的原型上
 Vue.prototype.$confirm = MessageBox.confirm //全局挂载  将挂载到了Vue的原型上
