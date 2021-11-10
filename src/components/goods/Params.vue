@@ -17,6 +17,7 @@
         <el-col>
           <span>选择商品分类:</span>
           <!-- 选择商品分类的级联选择框 -->
+          <el-cascader expand-trigger="hover" :options="catelist" :props="cateProps" v-model="selectedCatekeys" @change="handleChange"></el-cascader>
         </el-col>
       </el-row>
     </el-card>
@@ -28,7 +29,15 @@ export default {
   data(){
     return{
       //商品分类列表
-      catelist:[]
+      catelist:[],
+      // 级联选择框的配置对象
+      cateProps: {
+        value:'cat_id',
+        label:'cat_name',
+        children:'children'
+      },
+      //级联选择框双向绑定到的数组
+      selectedCatekeys:[],
     }
   },
   created(){
@@ -43,6 +52,10 @@ export default {
         }
         this.catelist = res.catelist;
         console.log(this.catelist)
+    },
+    //级联选择框选中项变化，会触发这个函数
+    handleChange(){
+      console.log(this.selectedCatekeys)
     }
   }
 }
@@ -51,5 +64,8 @@ export default {
 <style lang="less" scoped>
 .cat_opt{
     margin:15px 0;
+}
+.el-scrollbar_wrap{
+  overflow-x: auto;
 }
 </style>
