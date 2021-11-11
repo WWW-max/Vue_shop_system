@@ -25,6 +25,40 @@
 
 <script>
 export default {
+    data(){
+        return{
+            //查询参数对象
+            queryInfo:{
+                query:'',
+                pagenum:1,
+                pagesize:10,
+            },
+            //商品列表
+            goodslist:[],
+            //总数据条数
+            total:0,
+        }
+    },
+    created(){
+        this.getGoodsList()
+    },
+    methods:{
+        //根据分页获取对应的商品列表
+        async getGoodsList(){
+           const {data:res} = await this.$http.get('goods',{params:this.queryInfo})
+
+           if(res.meta.status!=200){
+               return this.$message.error('获取商品列表失败！');
+           }
+
+           this.$message.success('获取商品列表成功！')
+           console.log(res.data)
+           this.goodslist = res.data.goods;
+           this.total = res.data.total;
+        }
+
+        
+    }
 
 }
 </script>
