@@ -44,6 +44,14 @@
               <el-form-item label="商品数量" prop="goods_number" type="number">
                 <el-input v-model="addForm.goods_number"></el-input>
               </el-form-item>
+              <el-form-item label="商品分类" prop="goods_cat">
+                  <el-cascader
+                  v-model="addForm.goods_cat"
+                  :options="catelist"
+                  :props="cateProps"
+                  @change="handleChange">
+                  </el-cascader>
+              </el-form-item>
           <el-tab-pane label="商品参数" name="1">商品参数</el-tab-pane>
           <el-tab-pane label="商品属性" name="2">商品属性</el-tab-pane>
           <el-tab-pane label="商品图片" name="3">商品图片</el-tab-pane>
@@ -64,7 +72,9 @@ export default {
         goods_name:'',
         goods_price:0,
         goods_weight:0,
-        goods_number:0
+        goods_number:0,
+        //商品所属的分类数组
+        goods_cat:[],
       },
       addFormRules:{
         goods_name:[
@@ -79,9 +89,19 @@ export default {
         goods_number:[
           {required: true, message:'请输入商品数量', trigger: 'blur'}
         ],
+        goods_cat:[
+          {required: true, message:'请选择商品分类', trigger: 'blur'}
+        ]
       },
       //商品分类列表
-      catelist:[]
+      catelist:[],
+      cateProps:{ 
+        expandTrigger: 'hover',
+        label:'cat_name',
+        value:'cat_id',
+        children:'children',
+
+        }
     };
   },
   created() {
@@ -99,6 +119,11 @@ export default {
        this.catelist = res.data
        console.log('@@@@@@@',this.catelist);
        
+    },
+    //级联选择器选中项变化,会触发这个函数
+    handleChange(){
+        console.log(this.addForm.goods_cat);
+        
     }
   },
 };
