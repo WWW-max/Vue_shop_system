@@ -122,18 +122,14 @@ export default {
     },
     //级联选择器选中项变化,会触发这个函数
     handleChange(){
-        console.log('aaaa'+this.addForm.goods_cat);
-        if(this.addForm.goods_cat.length!==3){
-          this.addForm.goods_cat = []
-        }
+        console.log(this.addForm.goods_cat);
         
     },
     beforeTabLeave(activeName,oldActiveName){
-        if(oldActiveName ==='0' && this.addForm.goods_cat.length!==3)
-        {
-          this.$message.error('请先选择商品分类！')
-          return false;                  
-        }
+      if(oldActiveName==='0'&& this.addForm.goods_cat.length!==3){
+        this.$message.error('请先选择商品分类！');
+        return false;
+      }
     }
   },
 };
