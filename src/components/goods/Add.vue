@@ -30,7 +30,7 @@
 
       <!-- tab栏区域 -->
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px" label-position="top">
-        <el-tabs v-model="activeIndex" :tab-position="'left'" :before-leave="beforeTabLeave">
+        <el-tabs v-model="activeIndex" :tab-position="'left'" :before-leave="beforeTabLeave" @tab-click="tabClicked">
           <el-tab-pane label="基本信息" name="0">基本信息</el-tab-pane>
               <el-form-item label="商品名称" prop="goods_name">
                 <el-input v-model="addForm.goods_name"></el-input>
@@ -130,8 +130,40 @@ export default {
         this.$message.error('请先选择商品分类！');
         return false;
       }
+    },
+    async tabClicked(){
+      //  证明访问的是动态参数面板
+      if(this.activeIndex==='1'){
+        const {data: res} = await this.$http.get(`categories/${this.cateId}/
+        attributes`,{params:{sel:'many'}})
+          if(res.meta.status !==200){
+            return this.$message.error('获取动态参数列表失败！');
+          }
+           console.log('hhhhhh',res.data);
+      }
     }
   },
+  // async tabClicked(){
+    // //  证明访问的是动态参数面板
+    // if(this.activeIndex==='1'){
+    //  const {data: res} = await this.$http.get(`categories/${this.cateId}/
+    //  attributes`,{params:{sel:'many'}})
+    //  if(res.meta.status !==200){
+    //    return this.$message.error('获取动态参数列表失败！');
+    //  }
+    //  console.log(res.data);
+     
+    // }
+      
+    // }
+  computed:{
+    cateId(){
+      if(this.addForm.goods_cat.length===3){
+        return this.addForm.goods_cat[2];
+      }
+      return null;
+    }
+  }
 };
 </script>
 
