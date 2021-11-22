@@ -29,45 +29,17 @@
       </el-steps>
 
       <!-- tab栏区域 -->
-<<<<<<< HEAD
-      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px" label-position="top">
-        <el-tabs v-model="activeIndex" :tab-position="'left'" :before-leave="beforeTabLeave" @tab-click="tabClicked">
-          <el-tab-pane label="基本信息" name="0">基本信息</el-tab-pane>
-              <el-form-item label="商品名称" prop="goods_name">
-                <el-input v-model="addForm.goods_name"></el-input>
-              </el-form-item>
-              <el-form-item label="商品价格" prop="goods_price">
-                <el-input v-model="addForm.goods_price" type="number"></el-input>
-              </el-form-item>
-              <el-form-item label="商品重量" prop="goods_weight" type="number">
-                <el-input v-model="addForm.goods_weight"></el-input>
-              </el-form-item>
-              <el-form-item label="商品数量" prop="goods_number" type="number">
-                <el-input v-model="addForm.goods_number"></el-input>
-              </el-form-item>
-              <el-form-item label="商品分类" prop="goods_cat">
-                  <el-cascader
-                  v-model="addForm.goods_cat"
-                  :options="catelist"
-                  :props="cateProps"
-                  @change="handleChange">
-                  </el-cascader>
-              </el-form-item>
-          <el-tab-pane label="商品参数" name="1">商品参数</el-tab-pane>
-=======
       <el-form
         :model="addForm"
         :rules="addFormRules"
         ref="addFormRef"
         label-width="100px"
-        label-position="top"
-      >
+        label-position="top" >
         <el-tabs
           v-model="activeIndex"
           :tab-position="'left'"
           :before-leave="beforeTabLeave"
-          @tab-click="tabClicked"
-        >
+          @tab-click="tabClicked">
           <el-tab-pane label="基本信息" name="0">
                   <el-form-item label="商品名称" prop="goods_name">
                     <el-input v-model="addForm.goods_name"></el-input>
@@ -100,7 +72,6 @@
                 </el-checkbox-group>
              </el-form-item>
           </el-tab-pane>
->>>>>>> goods_list
           <el-tab-pane label="商品属性" name="2">商品属性</el-tab-pane>
           <el-tab-pane label="商品图片" name="3">商品图片</el-tab-pane>
           <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
@@ -151,6 +122,8 @@ export default {
       },
       //动态参数列表数据
       manyTableData: [],
+      //静态属性列表数据
+      onlyTableData:[],
     };
   },
   created() {
@@ -168,7 +141,6 @@ export default {
       this.catelist = res.data;
     },
     //级联选择器选中项变化,会触发这个函数
-<<<<<<< HEAD
     handleChange(){
         console.log(this.addForm.goods_cat);
         
@@ -189,8 +161,7 @@ export default {
           }
            console.log('hhhhhh',res.data);
       }
-    }
-=======
+    },
     handleChange() {
       console.log(this.addForm.goods_cat);
     },
@@ -204,7 +175,7 @@ export default {
     //切换页签后获取动态参数数据
     async tabClicked() {
       // 证明访问的是动态参数面板
-      if (this.activeIndex === "1") {
+      if (this.activeIndex === '1') {
         const { data: res } = await this.$http.get(
           `categories/${this.cateId}/attributes`,
           { params: { sel: "many" } }
@@ -217,6 +188,16 @@ export default {
           item.attr_vals = item.attr_vals.length ===0 ? [] :item.attr_vals.split(',')
         })
         this.manyTableData = res.data;
+      }else if(this.activeIndex ==='2'){//如果访问的是商品属性
+        const {data:res} = await this.$http.get(
+          `categories/${this.cateId}/attributes`,
+          { params: { sel: "only" } }
+        );
+        if(res.meta.status !==200) {
+          return this.$message.error('获取静态属性失败！')
+        }
+        console.log(res.data);
+        this.onlyTableData = res.data;
       }
     },
   },
@@ -227,21 +208,7 @@ export default {
       }
       return null;
     },
->>>>>>> goods_list
   },
-  // async tabClicked(){
-    // //  证明访问的是动态参数面板
-    // if(this.activeIndex==='1'){
-    //  const {data: res} = await this.$http.get(`categories/${this.cateId}/
-    //  attributes`,{params:{sel:'many'}})
-    //  if(res.meta.status !==200){
-    //    return this.$message.error('获取动态参数列表失败！');
-    //  }
-    //  console.log(res.data);
-     
-    // }
-      
-    // }
   computed:{
     cateId(){
       if(this.addForm.goods_cat.length===3){
