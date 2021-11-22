@@ -34,6 +34,8 @@ import {
     Step,
     Tabs,
     TabPane,
+    Checkbox,
+    CheckboxGroup,
 } from 'element-ui'
 // 导入弹框提示组件
 import{Message} from 'element-ui'
@@ -70,5 +72,7 @@ Vue.use(Steps)
 Vue.use(Step)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)
 Vue.prototype.$message = Message//全局挂载  将弹框组件挂载到了Vue的原型上
 Vue.prototype.$confirm = MessageBox.confirm //全局挂载  将挂载到了Vue的原型上
