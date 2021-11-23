@@ -34,14 +34,12 @@
         :rules="addFormRules"
         ref="addFormRef"
         label-width="100px"
-        label-position="top"
-      >
+        label-position="top" >
         <el-tabs
           v-model="activeIndex"
           :tab-position="'left'"
           :before-leave="beforeTabLeave"
-          @tab-click="tabClicked"
-        >
+          @tab-click="tabClicked">
           <el-tab-pane label="基本信息" name="0">
                   <el-form-item label="商品名称" prop="goods_name">
                     <el-input v-model="addForm.goods_name"></el-input>
@@ -74,7 +72,11 @@
                 </el-checkbox-group>
              </el-form-item>
           </el-tab-pane>
-          <el-tab-pane label="商品属性" name="2">商品属性</el-tab-pane>
+          <el-tab-pane label="商品属性" name="2">
+            <el-form-item :label="item.attr_name" v-for="item in onlyTableData" :key="item.attr_id">
+               <el-input v-model="item.attr_vals"></el-input>  
+            </el-form-item> 
+          </el-tab-pane>
           <el-tab-pane label="商品图片" name="3">商品图片</el-tab-pane>
           <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
         </el-tabs>
@@ -124,6 +126,8 @@ export default {
       },
       //动态参数列表数据
       manyTableData: [],
+      //静态属性列表数据
+      onlyTableData:[],
     };
   },
   created() {
@@ -141,6 +145,27 @@ export default {
       this.catelist = res.data;
     },
     //级联选择器选中项变化,会触发这个函数
+    handleChange(){
+        console.log(this.addForm.goods_cat);
+        
+    },
+    beforeTabLeave(activeName,oldActiveName){
+      if(oldActiveName==='0'&& this.addForm.goods_cat.length!==3){
+        this.$message.error('请先选择商品分类！');
+        return false;
+      }
+    },
+    async tabClicked(){
+      //  证明访问的是动态参数面板
+      if(this.activeIndex==='1'){
+        const {data: res} = await this.$http.get(`categories/${this.cateId}/
+        attributes`,{params:{sel:'many'}})
+          if(res.meta.status !==200){
+            return this.$message.error('获取动态参数列表失败！');
+          }
+           console.log('hhhhhh',res.data);
+      }
+    },
     handleChange() {
       console.log(this.addForm.goods_cat);
     },
@@ -154,7 +179,7 @@ export default {
     //切换页签后获取动态参数数据
     async tabClicked() {
       // 证明访问的是动态参数面板
-      if (this.activeIndex === "1") {
+      if (this.activeIndex === '1') {
         const { data: res } = await this.$http.get(
           `categories/${this.cateId}/attributes`,
           { params: { sel: "many" } }
@@ -167,6 +192,16 @@ export default {
           item.attr_vals = item.attr_vals.length ===0 ? [] :item.attr_vals.split(',')
         })
         this.manyTableData = res.data;
+      }else if(this.activeIndex ==='2'){//如果访问的是商品属性
+        const {data:res} = await this.$http.get(
+          `categories/${this.cateId}/attributes`,
+          { params: { sel: "only" } }
+        );
+        if(res.meta.status !==200) {
+          return this.$message.error('获取静态属性失败！')
+        }
+        console.log(res.data);
+        this.onlyTableData = res.data;
       }
     },
   },
@@ -178,6 +213,14 @@ export default {
       return null;
     },
   },
+  computed:{
+    cateId(){
+      if(this.addForm.goods_cat.length===3){
+        return this.addForm.goods_cat[2];
+      }
+      return null;
+    }
+  }
 };
 </script>
 
