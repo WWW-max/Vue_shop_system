@@ -83,7 +83,7 @@
               :action="uploadURL"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
-              list-type="picture" :headers="headerObj">
+              list-type="picture" :headers="headerObj" :on-success="handleSuccess">
               <el-button size="small" type="primary">点击上传</el-button>
             </el-upload>
           </el-tab-pane>
@@ -107,6 +107,8 @@ export default {
         goods_number: 0,
         //商品所属的分类数组
         goods_cat: [],
+        //图片的数组
+        pics:[],
       },
       addFormRules: {
         goods_name: [
@@ -142,7 +144,7 @@ export default {
       //图片上传组件的headers请求头对象
       headerObj:{
         Authorization:window.sessionStorage.getItem('token')
-      }
+      },
     };
   },
   created() {
@@ -226,6 +228,15 @@ export default {
     //处理移除图片的操作
     handleRemove(){
 
+    },
+    //监听图片上上传成功的事件
+    handleSuccess(response){
+      console.log(response)
+      //1.拼接得到一个图片信息对象
+      const picInfo ={pic:response.data.tmp_path}
+      //2.将图片信息对象push到pics数组中
+      this.addForm.pics.push(picInfo)
+      console.log(this.addForm)
     }
   },
   computed: {
