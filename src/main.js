@@ -9,6 +9,13 @@ import './assets/css/global.css'
 
 import TreeTable from 'vue-table-with-tree-grid'
 
+//导入富文本编辑器
+import VueQuillEditor from 'vue-quill-editor'
+//导入富文本编辑器对应的样式
+import 'quill/dist/quill.core.css' // import styles
+import 'quill/dist/quill.snow.css' // for snow theme
+import 'quill/dist/quill.bubble.css' // for bubble theme
+
 // 导入axios
 import axios from 'axios'
 
@@ -31,6 +38,8 @@ Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 Vue.component('tree-table', TreeTable)
+//将富文本编辑器，注册为全局可用的组件
+Vue.use(VueQuillEditor)
 
 //全局定义一个时间格式过滤器
 Vue.filter('dateFormat',function(originVal){
