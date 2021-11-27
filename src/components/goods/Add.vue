@@ -91,7 +91,7 @@
             <!-- 富文本编辑器组件 -->
             <quill-editor v-model="addForm.goods_introduce"></quill-editor>
             <!-- 添加商品的按钮 -->
-            <el-button type="primary" class="btnAdd">添加商品</el-button>
+            <el-button type="primary" class="btnAdd" @click="add">添加商品</el-button>
           </el-tab-pane>
         </el-tabs>
       </el-form>
@@ -262,15 +262,16 @@ export default {
       //2.将图片信息对象push到pics数组中
       this.addForm.pics.push(picInfo)
       console.log(this.addForm)
-    }
-  },
-  computed: {
-    cateId() {
-      if (this.addForm.goods_cat.length === 3) {
-        return this.addForm.goods_cat[2];
-      }
-      return null;
     },
+    //添加商品
+    add(){
+      this.$refs.addFormRef.validate(valid =>{
+        if(!valid){
+          return this.$message.error('请填写必要的表单项！')
+        }
+        //执行添加的业务逻辑
+      })
+    }
   },
   computed:{
     cateId(){
