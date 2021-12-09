@@ -17,7 +17,7 @@
         <el-col>
           <span>选择商品分类:</span>
           <!-- 选择商品分类的级联选择框 -->
-          <el-cascader expand-trigger="hover" :options="catelist" :props="cateProps" v-model="selectedCatekeys" @change="handleChange"></el-cascader>
+          <el-cascader :options="catelist" :props="cateProps" v-model="selectedCatekeys" @change="handleChange"></el-cascader>
         </el-col>
       </el-row>
     </el-card>
@@ -32,8 +32,9 @@ export default {
       catelist:[],
       // 级联选择框的配置对象
       cateProps: {
-        value:'cat_id',
+        expandTrigger:"hover",
         label:'cat_name',
+        value:'cat_id',
         children:'children'
       },
       //级联选择框双向绑定到的数组
@@ -48,9 +49,9 @@ export default {
     async getCateList(){
         const {data:res} = await this.$http.get('categories')
         if(res.meta.status !==200){
-          return this.$messagel.error('获取商品分类失败！')
+          return this.$message.error('获取商品分类失败！')
         }
-        this.catelist = res.catelist;
+        this.catelist = res.data;
         console.log(this.catelist)
     },
     //级联选择框选中项变化，会触发这个函数
